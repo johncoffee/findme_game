@@ -383,6 +383,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 471513022}
   - 114: {fileID: 471513023}
+  - 114: {fileID: 471513024}
   m_Layer: 5
   m_Name: RoomList
   m_TagString: Untagged
@@ -431,6 +432,23 @@ MonoBehaviour:
   m_Spacing: 3
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
+--- !u!114 &471513024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 471513021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33574896c94344299956e70ef4f80eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainStuff: {fileID: 430591264}
+  buttons:
+  - {fileID: 1800176571}
+  - {fileID: 1648560554}
+  - {fileID: 1969088735}
+  - {fileID: 451376860}
 --- !u!1 &489256961
 GameObject:
   m_ObjectHideFlags: 0
@@ -1446,7 +1464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seekUI: {fileID: 489256961}
-  roomsUI: {fileID: 471513021}
+  roomsUI: {fileID: 0}
 --- !u!1 &1969088733
 GameObject:
   m_ObjectHideFlags: 0

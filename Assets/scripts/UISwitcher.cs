@@ -4,7 +4,9 @@ using System.Collections;
 public class UISwitcher : MonoBehaviour {
 
 	public GameObject seekUI;
-	public GameObject roomsUI;
+	public RoomList roomsUI;
+
+
 	// Use this for initialization
 	void Start () {
 	
@@ -17,12 +19,12 @@ public class UISwitcher : MonoBehaviour {
 
 	public void ShowSeekUI() {
 		seekUI.SetActive (true);
-		roomsUI.SetActive (false);
+		roomsUI.Hide ();
 	}
 
 	public void ShowRoomsUI() {
 		seekUI.SetActive (false);
-		roomsUI.SetActive (true);
+		roomsUI.Show();
 	}
 
 	public void OnTimeup() {
