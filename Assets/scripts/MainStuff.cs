@@ -17,7 +17,7 @@ public class MainStuff : MonoBehaviour {
 		timers = GetComponent<Timers>();
 
 
-		CheckinRoom(1);
+//		CheckinRoom(1);
 	}
 	
 
