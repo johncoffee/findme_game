@@ -38,6 +38,8 @@ public class MainStuff : MonoBehaviour
 			ui.SendMessage ("OnFound");
 		}
 		timers.StopTimer ();
+		
+		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Found ());	
 
 
 	}
@@ -48,9 +50,11 @@ public class MainStuff : MonoBehaviour
 
 		activeRoomID = roomID;
 
+		
+		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.CheckedIn (roomID));	
 		switch (roomID) {
 		case 1:
-			timers.CreateTimer (3f, () => {					
+			timers.CreateTimer (30f, () => {					
 				if (!bodyPartWasFound) {
 					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 					

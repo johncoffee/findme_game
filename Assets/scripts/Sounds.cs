@@ -19,6 +19,11 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 	}
 
 
+	public void CheckedIn (int roomId)
+	{
+		PlayAmbient (roomId);
+	}
+
 	public void PlayAmbient(int roomID) {
 		ambientSounds [roomID - 1].Play ();
 	}
