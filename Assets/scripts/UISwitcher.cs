@@ -5,6 +5,7 @@ public class UISwitcher : MonoBehaviour {
 
 	public GameObject seekUI;
 	public RoomList roomsUI;
+	public GameObject finishedUI;
 
 
 	// Use this for initialization
@@ -26,12 +27,22 @@ public class UISwitcher : MonoBehaviour {
 		seekUI.SetActive (false);
 		roomsUI.Show();
 	}
+	
+	public void ShowFinishedUI() {
+		seekUI.SetActive (false);
+		roomsUI.Hide();
+		finishedUI.SetActive (true);
+	}
 
 	public void OnTimeup() {
 		ShowRoomsUI ();
 	}
 
 	public void OnFound() {
-
+		ShowRoomsUI ();
+	}
+	
+	public void OnAllRoomsFinished() {
+		ShowFinishedUI ();
 	}
 }

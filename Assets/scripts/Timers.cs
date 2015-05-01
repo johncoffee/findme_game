@@ -7,6 +7,8 @@ public class Timers : MonoBehaviour {
 
 	public delegate void OnTimer();
 
+	private Coroutine activeTimer;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -17,8 +19,14 @@ public class Timers : MonoBehaviour {
 	
 	}
 
+	public void StopTimer() {
+		if (activeTimer != null) {
+			StopCoroutine (activeTimer);
+		}
+	}
+
 	public void CreateTimer (float seconds, OnTimer callback) {
-		StartCoroutine(createTimer(seconds, callback));
+		activeTimer = StartCoroutine(createTimer(seconds, callback));
 	}
 
 	IEnumerator createTimer(float seconds, OnTimer callback) {

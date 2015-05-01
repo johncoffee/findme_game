@@ -32,7 +32,14 @@ public class MainStuff : MonoBehaviour
 	{
 		bodyPartWasFound = true;
 		visitedRooms.Add (activeRoomID);
-		ui.SendMessage ("OnFound");
+		if (visitedRooms.Count >= 4) {
+			ui.SendMessage ("OnAllRoomsFinished");
+		} else {
+			ui.SendMessage ("OnFound");
+		}
+		timers.StopTimer ();
+
+
 	}
 
 	public void CheckinRoom (int roomID)
@@ -43,7 +50,7 @@ public class MainStuff : MonoBehaviour
 
 		switch (roomID) {
 		case 1:
-			timers.CreateTimer (30f, () => {					
+			timers.CreateTimer (3f, () => {					
 				if (!bodyPartWasFound) {
 					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 					
