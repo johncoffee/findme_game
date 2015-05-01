@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timers: {fileID: 0}
+  activeRoomID: -1
 --- !u!114 &11452952
 MonoBehaviour:
   m_ObjectHideFlags: 1
