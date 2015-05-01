@@ -10,6 +10,8 @@ public class MainStuff : MonoBehaviour {
 
 	public HashSet<int> visitedRooms = new HashSet<int>();
 
+	public GameObject ui;
+
 	public int activeRoomID = -1;
 
 	// Use this for initialization
@@ -42,7 +44,10 @@ public class MainStuff : MonoBehaviour {
 				timers.CreateTimer (2f, () => {					
 					if (!bodyPartWasFound) {
 						ExecuteEvents.Execute<ITimeupEvent>(gameObject, null, (x,y) => x.Timeup() );			
-					}
+
+						ui.SendMessage("OnTimeup");
+					}					
+					
 				});
 				break;	
 
