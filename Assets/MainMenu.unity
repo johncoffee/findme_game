@@ -214,6 +214,10 @@ Prefab:
       propertyPath: timeoutBuzz
       value: 
       objectReference: {fileID: 1890018147}
+    - target: {fileID: 11436808, guid: 66ba4dd438ca749d78429340c2959945, type: 2}
+      propertyPath: ui
+      value: 
+      objectReference: {fileID: 1919116328}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 66ba4dd438ca749d78429340c2959945, type: 2}
   m_IsPrefabParent: 0
