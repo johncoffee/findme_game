@@ -25,7 +25,7 @@ public class UISwitcher : MonoBehaviour {
 		roomsUI.SetActive (true);
 	}
 
-	public void OnTimeUp() {
+	public void OnTimeup() {
 		ShowRoomsUI ();
 	}
 }
