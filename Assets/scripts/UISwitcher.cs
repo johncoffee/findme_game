@@ -24,4 +24,8 @@ public class UISwitcher : MonoBehaviour {
 		seekUI.SetActive (false);
 		roomsUI.SetActive (true);
 	}
+
+	public void OnTimeUp() {
+		ShowRoomsUI ();
+	}
 }
