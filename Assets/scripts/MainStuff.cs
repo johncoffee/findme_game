@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class MainStuff : MonoBehaviour {
 
@@ -24,10 +25,13 @@ public class MainStuff : MonoBehaviour {
 			case 1:
 				timers.CreateTimer (2f, () => {
 					Debug.Log("Button 1 has timeout");
+					ExecuteEvents.Execute<ITimeupEvent>(gameObject, null, (x,y) => x.Timeup() );			
 				});
 				break;	
 
 		}
 	}
+
+
 	
 }
