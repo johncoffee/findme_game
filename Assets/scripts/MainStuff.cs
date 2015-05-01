@@ -3,20 +3,19 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class MainStuff : MonoBehaviour {
+public class MainStuff : MonoBehaviour
+{
 
 	public Timers timers;
-	bool bodyPartWasFound= false;
-
-	public HashSet<int> visitedRooms = new HashSet<int>();
-
+	bool bodyPartWasFound = false;
+	public HashSet<int> visitedRooms = new HashSet<int> ();
 	public GameObject ui;
-
 	public int activeRoomID = -1;
 
 	// Use this for initialization
-	void Start () {
-		timers = GetComponent<Timers>();
+	void Start ()
+	{
+		timers = GetComponent<Timers> ();
 
 
 //		CheckinRoom(1);
@@ -24,33 +23,64 @@ public class MainStuff : MonoBehaviour {
 	
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 	
 	}
 
-	public void Found () {
+	public void Found ()
+	{
 		bodyPartWasFound = true;
-		visitedRooms.Add(activeRoomID);
+		visitedRooms.Add (activeRoomID);
 	}
 
-
-	public void CheckinRoom (int roomID) {
+	public void CheckinRoom (int roomID)
+	{
 		bodyPartWasFound = false;
 
 		activeRoomID = roomID;
 
 		switch (roomID) {
-			case 1:
-				timers.CreateTimer (2f, () => {					
-					if (!bodyPartWasFound) {
-						ExecuteEvents.Execute<ITimeupEvent>(gameObject, null, (x,y) => x.Timeup() );			
-
-						ui.SendMessage("OnTimeup");
-					}					
+		case 1:
+			timers.CreateTimer (30f, () => {					
+				if (!bodyPartWasFound) {
+					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 					
-				});
-				break;	
-
+					ui.SendMessage ("OnTimeup");
+				}					
+				
+			});
+			break;	
+		case 2:
+			timers.CreateTimer (45f, () => {					
+				if (!bodyPartWasFound) {
+					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
+					
+					ui.SendMessage ("OnTimeup");
+				}					
+				
+			});
+			break;	
+		case 3:
+			timers.CreateTimer (60f, () => {					
+				if (!bodyPartWasFound) {
+					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
+					
+					ui.SendMessage ("OnTimeup");
+				}					
+				
+			});
+			break;	
+		case 4:
+			timers.CreateTimer (90f, () => {					
+				if (!bodyPartWasFound) {
+					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
+					
+					ui.SendMessage ("OnTimeup");
+				}					
+				
+			});
+			break;	
 		}
 	}
 
