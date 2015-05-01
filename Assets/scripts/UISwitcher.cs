@@ -30,4 +30,8 @@ public class UISwitcher : MonoBehaviour {
 	public void OnTimeup() {
 		ShowRoomsUI ();
 	}
+
+	public void OnFound() {
+
+	}
 }

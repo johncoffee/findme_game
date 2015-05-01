@@ -32,6 +32,7 @@ public class MainStuff : MonoBehaviour
 	{
 		bodyPartWasFound = true;
 		visitedRooms.Add (activeRoomID);
+		ui.SendMessage ("OnFound");
 	}
 
 	public void CheckinRoom (int roomID)
