@@ -20,7 +20,7 @@ public class Connector : MonoBehaviour {
 		zeroConf.ServiceFound += ServiceFound;
 		zeroConf.StartPublishAndSearch ();
 		client = GetComponent<Client> ();
-		/*
+
 		ServerButton button = Instantiate (serverButtonPrefab) as ServerButton;
 		ServiceInfo info = new ServiceInfo ();
 		info.ipAddress = "192.168.1.76";
@@ -33,7 +33,7 @@ public class Connector : MonoBehaviour {
 		buttonController.onClick.AddListener(() => ServerButtonClicked(info));
 		LayoutRebuilder.MarkLayoutForRebuild (verticalLayout.transform as RectTransform);
 
-
+		/*
 		ServerButton button2 = Instantiate (serverButtonPrefab) as ServerButton;
 		ServiceInfo info2 = new ServiceInfo ();
 		info2.ipAddress = "192.168.0.50";
@@ -45,7 +45,7 @@ public class Connector : MonoBehaviour {
 		Button buttonController2 = button2.GetComponent<Button>();
 		buttonController2.onClick.AddListener(() => ServerButtonClicked(info2));
 		LayoutRebuilder.MarkLayoutForRebuild (verticalLayout.transform as RectTransform);
-		*/
+*/
 	}
 	
 	// Update is called once per frame

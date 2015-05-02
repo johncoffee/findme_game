@@ -8,6 +8,7 @@ public class UISwitcher : MonoBehaviour {
 	public GameObject finishedUI;
 	public GameObject connectUI;
 	public GameObject lostUI;
+	public GameObject hauntedUI;
 
 
 	// Use this for initialization
@@ -28,6 +29,7 @@ public class UISwitcher : MonoBehaviour {
 	public void ShowRoomsUI() {
 		connectUI.SetActive (false);
 		seekUI.SetActive (false);
+		hauntedUI.SetActive (false);
 		roomsUI.Show();
 	}
 	
@@ -44,9 +46,17 @@ public class UISwitcher : MonoBehaviour {
 		finishedUI.SetActive (false);
 		lostUI.SetActive (true);
 	}
+	
+	public void ShowHauntedUI() {
+		
+		seekUI.SetActive (false);
+		roomsUI.Hide();
+		finishedUI.SetActive (false);
+		hauntedUI.SetActive (true);
+	}
 
 	public void OnTimeup() {
-		ShowRoomsUI ();
+		ShowHauntedUI ();
 	}
 
 	public void OnFound() {

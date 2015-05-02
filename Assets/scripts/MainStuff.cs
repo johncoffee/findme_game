@@ -125,6 +125,7 @@ public class MainStuff : MonoBehaviour
 			isLocked = true;
 			ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 			ui.SendMessage ("OnTimeup");
+			isInRoom = false;
 		}
 	}
 
@@ -132,6 +133,7 @@ public class MainStuff : MonoBehaviour
 		isLocked = false;
 		
 		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
+		ui.ShowRoomsUI ();
 	}
 
 	public void YouLost() {
