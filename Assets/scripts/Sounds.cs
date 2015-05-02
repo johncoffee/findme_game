@@ -13,6 +13,8 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 		timeoutBuzz.Play();
 		StopAmbient ();
 	}
+
+
 	public void Found ()
 	{
 		StopAmbient ();
@@ -25,7 +27,7 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 	}
 
 	public void PlayAmbient(int roomID) {
-		ambientSounds [roomID - 1].Play ();
+		ambientSounds [(roomID - 1) % ambientSounds.Count].Play ();
 	}
 
 	public void StopAmbient() {
@@ -33,7 +35,10 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 			source.Stop();
 		}
 	}
-
+	public void UnlockEvent ()
+	{
+		timeoutBuzz.Stop();
+	}
 }
 
 

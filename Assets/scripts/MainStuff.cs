@@ -9,8 +9,15 @@ public class MainStuff : MonoBehaviour
 	public Timers timers;
 	bool bodyPartWasFound = false;
 	public HashSet<int> visitedRooms = new HashSet<int> ();
-	public GameObject ui;
+	public UISwitcher ui;
 	public int activeRoomID = -1;
+
+	public SocketInterface socketInterface;
+
+	private bool isInRoom = false;
+
+	private bool isLocked = false;
+
 
 	// Use this for initialization
 	void Start ()
@@ -30,10 +37,13 @@ public class MainStuff : MonoBehaviour
 
 	public void Found ()
 	{
+		isInRoom = false;
 		bodyPartWasFound = true;
 		visitedRooms.Add (activeRoomID);
 		if (visitedRooms.Count >= 4) {
 			ui.SendMessage ("OnAllRoomsFinished");
+			socketInterface.SendYouLost();
+
 		} else {
 			ui.SendMessage ("OnFound");
 		}
@@ -44,21 +54,31 @@ public class MainStuff : MonoBehaviour
 
 	}
 
+
+
 	public void CheckinRoom (int roomID)
 	{
+		if (isLocked) {
+			return;
+		}
+
+		ui.ShowSeekUI ();
 		bodyPartWasFound = false;
 
 		activeRoomID = roomID;
 
 		
+		isInRoom = true;
 		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.CheckedIn (roomID));	
-		switch (roomID) {
+		/*switch (roomID) {
 		case 1:
 			timers.CreateTimer (30f, () => {					
 				if (!bodyPartWasFound) {
 					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 					
 					ui.SendMessage ("OnTimeup");
+					
+					isInRoom = false;
 				}					
 				
 			});
@@ -69,6 +89,7 @@ public class MainStuff : MonoBehaviour
 					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 					
 					ui.SendMessage ("OnTimeup");
+					isInRoom = false;
 				}					
 				
 			});
@@ -79,6 +100,7 @@ public class MainStuff : MonoBehaviour
 					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 					
 					ui.SendMessage ("OnTimeup");
+					isInRoom = false;
 				}					
 				
 			});
@@ -89,13 +111,31 @@ public class MainStuff : MonoBehaviour
 					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 					
 					ui.SendMessage ("OnTimeup");
+					isInRoom = false;
 				}					
 				
 			});
 			break;	
-		}
+		}*/
 	}
 
 
+	public void OthersHaveFoundYours() {
+		if (isInRoom) {
+			isLocked = true;
+			ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
+			ui.SendMessage ("OnTimeup");
+		}
+	}
+
+	public void Unlock() {
+		isLocked = false;
+		
+		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
+	}
+
+	public void YouLost() {
+		ui.ShowLostUI ();
+	}
 	
 }

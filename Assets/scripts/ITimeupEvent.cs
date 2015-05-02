@@ -7,6 +7,7 @@ public interface ITimeupEvent : IEventSystemHandler {
 	void Timeup();
 	void Found();
 	void CheckedIn(int roomId);
+	void UnlockEvent();
 
 
 }
