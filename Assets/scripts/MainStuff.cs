@@ -19,13 +19,29 @@ public class MainStuff : MonoBehaviour
 	private bool isLocked = false;
 
 
+	private enum ScannerState {
+		None,
+		Rooms,
+		Treasure,
+		Haunted
+	}
+
+	private ScannerState scannerState = ScannerState.None;
 	// Use this for initialization
 	void Start ()
 	{
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		// Initialize EasyCodeScanner
+		EasyCodeScanner.Initialize();
 		timers = GetComponent<Timers> ();
+		
+		//Register on Actions
+		EasyCodeScanner.OnScannerMessage += onScannerMessage;
+		EasyCodeScanner.OnScannerEvent += onScannerEvent;
+		EasyCodeScanner.OnDecoderMessage += onDecoderMessage;
 
-
-//		CheckinRoom(1);
+		
+		//		CheckinRoom(1);
 	}
 	
 
@@ -37,6 +53,9 @@ public class MainStuff : MonoBehaviour
 
 	public void Found ()
 	{
+
+
+
 		isInRoom = false;
 		bodyPartWasFound = true;
 		visitedRooms.Add (activeRoomID);
@@ -54,7 +73,9 @@ public class MainStuff : MonoBehaviour
 
 	}
 
-
+	public void OpenScanner() {
+		EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
+	}
 
 	public void CheckinRoom (int roomID)
 	{
@@ -70,6 +91,12 @@ public class MainStuff : MonoBehaviour
 		
 		isInRoom = true;
 		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.CheckedIn (roomID));	
+
+		scannerState = ScannerState.Treasure;
+		
+		//EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
+
+
 		/*switch (roomID) {
 		case 1:
 			timers.CreateTimer (30f, () => {					
@@ -130,14 +157,109 @@ public class MainStuff : MonoBehaviour
 	}
 
 	public void Unlock() {
-		isLocked = false;
+		/*isLocked = false;
 		
 		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
-		ui.ShowRoomsUI ();
+		ui.ShowRoomsUI ();*/
+
+		scannerState = ScannerState.Haunted;
+		EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
+
 	}
 
 	public void YouLost() {
 		ui.ShowLostUI ();
 	}
+
+
+	public void CheckIn() {
+		
+		scannerState = ScannerState.Rooms;
+		EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
+	}
+
 	
+	//Callback when returns from the scanner
+	void onScannerMessage(string data){
+		Debug.Log("EasyCodeScannerExample - onScannerMessage data:"+data);		
+		if (scannerState == ScannerState.Rooms) {
+			if(data.Length < 5) {
+				return;
+			}
+			string numberStr = data.Substring(4);
+			int roomId = -1;
+			int.TryParse(numberStr, out roomId);
+			if(roomId > 0) {
+				CheckinRoom(roomId);
+			}
+		}
+
+		if (scannerState == ScannerState.Treasure) {
+			if(data == "server") {
+				if(socketInterface.IsServer) {
+					Found();
+				} else {
+					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.FoundEnemyPiece ());	
+					socketInterface.SendFoundOther();
+				}
+			}
+			
+			else if(data == "client") {
+				if(!socketInterface.IsServer) {
+					Found();
+				} else {
+					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.FoundEnemyPiece ());	
+					socketInterface.SendFoundOther();
+				}
+			} else if(data == "") {
+				return;
+			} 
+		}
+
+		if (scannerState == ScannerState.Haunted) {
+			if(data == "serverBase" && socketInterface.IsServer ) {
+				
+				isLocked = false;
+				
+				ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
+				ui.ShowRoomsUI ();
+			} else if(data == "clientBase" && !socketInterface.IsServer ) {
+				
+				isLocked = false;
+				
+				ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
+				ui.ShowRoomsUI ();
+			} else {
+				EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
+			}
+		}
+	}
+	
+	//Callback which notifies an event
+	//param : "EVENT_OPENED", "EVENT_CLOSED"
+	void onScannerEvent(string eventStr){
+		Debug.Log("EasyCodeScannerExample - onScannerEvent:"+eventStr);
+
+
+	}
+	
+	//Callback when decodeImage has decoded the image/texture 
+	void onDecoderMessage(string data){
+		Debug.Log("EasyCodeScannerExample - onDecoderMessage data:"+data);
+
+		//dataStr = data;
+
+
+	}
+	
+
+	
+	void OnDestroy() {
+		
+		//Unregister
+		EasyCodeScanner.OnScannerMessage -= onScannerMessage;
+		EasyCodeScanner.OnScannerEvent -= onScannerEvent;
+		EasyCodeScanner.OnDecoderMessage -= onDecoderMessage;
+	}
+
 }

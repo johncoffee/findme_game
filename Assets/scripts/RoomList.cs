@@ -7,6 +7,9 @@ public class RoomList : MonoBehaviour {
 
 	public MainStuff mainStuff;
 	public List<Button> buttons = new List<Button>();
+	public SocketInterface socketInterface;
+	public Text teamOutput;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -23,6 +26,11 @@ public class RoomList : MonoBehaviour {
 			if(mainStuff.visitedRooms.Contains((i + 1))) {
 				buttons[i].interactable = false;
 			}
+		}
+		if (socketInterface.IsServer) {
+			teamOutput.text = "You are team blue";
+		} else {
+			teamOutput.text = "You are team red";
 		}
 	}
 

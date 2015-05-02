@@ -6,6 +6,13 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 
 	public AudioSource timeoutBuzz = null;
 	public List<AudioSource> ambientSounds = new List<AudioSource>();
+	
+	public AudioSource enterRoom = null;
+	public AudioSource homebase = null;
+	public AudioSource foundPiece = null;
+	public AudioSource foundEnemy = null;
+
+
 
 	public void Timeup ()
 	{
@@ -18,11 +25,13 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 	public void Found ()
 	{
 		StopAmbient ();
+		foundPiece.Play ();
 	}
 
 
 	public void CheckedIn (int roomId)
 	{
+		enterRoom.Play ();
 		PlayAmbient (roomId);
 	}
 
@@ -37,8 +46,14 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 	}
 	public void UnlockEvent ()
 	{
+		homebase.Play ();
 		timeoutBuzz.Stop();
 	}
+	public void FoundEnemyPiece ()
+	{
+		foundEnemy.Play ();
+	}
+
 }
 
 

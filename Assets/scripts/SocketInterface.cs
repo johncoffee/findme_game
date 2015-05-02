@@ -61,4 +61,8 @@ public class SocketInterface : MonoBehaviour {
 			mainStuff.YouLost();
 		}
 	}
+
+	public bool IsServer {
+		get { return isServer; } 
+	}
 }

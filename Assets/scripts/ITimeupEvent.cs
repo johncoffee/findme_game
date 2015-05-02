@@ -8,6 +8,6 @@ public interface ITimeupEvent : IEventSystemHandler {
 	void Found();
 	void CheckedIn(int roomId);
 	void UnlockEvent();
-
+	void FoundEnemyPiece();
 
 }
