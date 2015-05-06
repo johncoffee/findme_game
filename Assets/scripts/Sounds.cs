@@ -6,13 +6,19 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 
 	public AudioSource timeoutBuzz = null;
 	public List<AudioSource> ambientSounds = new List<AudioSource>();
+
+
+
 	
+	public List<AudioSource> blueSounds = new List<AudioSource>();
+	public List<AudioSource> redSounds = new List<AudioSource>();
+
 	public AudioSource enterRoom = null;
 	public AudioSource homebase = null;
 	public AudioSource foundPiece = null;
 	public AudioSource foundEnemy = null;
 
-
+	public SocketInterface socketInterface;
 
 	public void Timeup ()
 	{
@@ -37,10 +43,21 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 
 	public void PlayAmbient(int roomID) {
 		ambientSounds [(roomID - 1) % ambientSounds.Count].Play ();
+		if (socketInterface.IsServer) {
+			blueSounds [(roomID - 1) % blueSounds.Count].Play ();
+		} else {
+			redSounds [(roomID - 1) % redSounds.Count].Play ();
+		}
 	}
 
 	public void StopAmbient() {
 		foreach (AudioSource source in ambientSounds) {
+			source.Stop();
+		}
+		foreach (AudioSource source in redSounds) {
+			source.Stop();
+		}
+		foreach (AudioSource source in blueSounds) {
 			source.Stop();
 		}
 	}

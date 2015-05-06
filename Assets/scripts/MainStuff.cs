@@ -23,7 +23,8 @@ public class MainStuff : MonoBehaviour
 		None,
 		Rooms,
 		Treasure,
-		Haunted
+		Haunted,
+		Finished
 	}
 
 	private ScannerState scannerState = ScannerState.None;
@@ -60,8 +61,8 @@ public class MainStuff : MonoBehaviour
 		bodyPartWasFound = true;
 		visitedRooms.Add (activeRoomID);
 		if (visitedRooms.Count >= 4) {
-			ui.SendMessage ("OnAllRoomsFinished");
-			socketInterface.SendYouLost();
+			scannerState = ScannerState.Finished;
+			ui.SendMessage ("OnTimeup");
 
 		} else {
 			ui.SendMessage ("OnFound");
@@ -150,6 +151,7 @@ public class MainStuff : MonoBehaviour
 	public void OthersHaveFoundYours() {
 		if (isInRoom) {
 			isLocked = true;
+			scannerState = ScannerState.Haunted;
 			ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.Timeup ());			
 			ui.SendMessage ("OnTimeup");
 			isInRoom = false;
@@ -162,7 +164,6 @@ public class MainStuff : MonoBehaviour
 		ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
 		ui.ShowRoomsUI ();*/
 
-		scannerState = ScannerState.Haunted;
 		EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
 
 	}
@@ -194,7 +195,7 @@ public class MainStuff : MonoBehaviour
 			}
 		}
 
-		if (scannerState == ScannerState.Treasure) {
+		else if (scannerState == ScannerState.Treasure) {
 			if(data == "server") {
 				if(socketInterface.IsServer) {
 					Found();
@@ -216,7 +217,7 @@ public class MainStuff : MonoBehaviour
 			} 
 		}
 
-		if (scannerState == ScannerState.Haunted) {
+		else if (scannerState == ScannerState.Haunted) {
 			if(data == "serverBase" && socketInterface.IsServer ) {
 				
 				isLocked = false;
@@ -229,6 +230,24 @@ public class MainStuff : MonoBehaviour
 				
 				ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
 				ui.ShowRoomsUI ();
+			} else {
+				EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
+			}
+		}
+
+		
+		
+		else if (scannerState == ScannerState.Finished) {
+			if(data == "serverBase" && socketInterface.IsServer ) {
+				
+				ui.SendMessage ("OnAllRoomsFinished");
+				socketInterface.SendYouLost();
+
+			} else if(data == "clientBase" && !socketInterface.IsServer ) {
+				
+				ui.SendMessage ("OnAllRoomsFinished");
+				socketInterface.SendYouLost();
+
 			} else {
 				EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
 			}

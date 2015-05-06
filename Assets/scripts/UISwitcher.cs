@@ -36,6 +36,7 @@ public class UISwitcher : MonoBehaviour {
 	public void ShowFinishedUI() {
 		seekUI.SetActive (false);
 		roomsUI.Hide();
+		hauntedUI.SetActive (false);
 		finishedUI.SetActive (true);
 	}
 
@@ -44,6 +45,7 @@ public class UISwitcher : MonoBehaviour {
 		seekUI.SetActive (false);
 		roomsUI.Hide();
 		finishedUI.SetActive (false);
+		hauntedUI.SetActive (false);
 		lostUI.SetActive (true);
 	}
 	
