@@ -1,0 +1,5 @@
+bouncywp71.dll is a open source crypto API for Windows Phone devices. It will not be used unless you are compiling for WP8.
+
+It's source code is available here: http://www.bouncycastle.org/csharp/index.html
+
+UniExtensions.dll is included free with UniWeb, source code is available here: http://u3d.as/content/different-methods/uni-extender/2zx

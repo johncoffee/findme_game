@@ -12,6 +12,8 @@ public class Connector : MonoBehaviour {
 	
 	private ZeroConf zeroConf;
 	private Client client;
+
+
 	// Use this for initialization
 	void Start () {
 		zeroConf = GetComponent<ZeroConf> ();
@@ -56,7 +58,9 @@ public class Connector : MonoBehaviour {
 	
 	void ServiceFound(ServiceInfo service) {
 		ServerButton button = Instantiate (serverButtonPrefab) as ServerButton;
-		button.ServiceInfo = service;
+
+		ServerData data = new ServerData (service);
+		button.ServerData = data;
 		button.transform.SetParent (verticalLayout.transform, false);
 		Button buttonController = button.GetComponent<Button>();
 		buttonController.onClick.AddListener(() => ServerButtonClicked(service));

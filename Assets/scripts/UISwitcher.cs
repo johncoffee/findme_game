@@ -9,6 +9,7 @@ public class UISwitcher : MonoBehaviour {
 	public GameObject connectUI;
 	public GameObject lostUI;
 	public GameObject hauntedUI;
+	public ConnectThroughServer serverConnect;
 
 
 	// Use this for initialization
@@ -55,6 +56,17 @@ public class UISwitcher : MonoBehaviour {
 		roomsUI.Hide();
 		finishedUI.SetActive (false);
 		hauntedUI.SetActive (true);
+	}
+
+	public void ShowServerConnect() {
+		connectUI.SetActive (false);
+		serverConnect.gameObject.SetActive (true);
+		serverConnect.GetAllGames ();
+	}
+	
+	public void ShowConnect() {
+		connectUI.SetActive (true);
+		serverConnect.gameObject.SetActive (false);
 	}
 
 	public void OnTimeup() {

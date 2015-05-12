@@ -6,7 +6,7 @@ public class ServerButton : MonoBehaviour {
 
 	public Text label;
 
-	private ServiceInfo service;
+	private ServerData serverData;
 	// Use this for initialization
 	void Start () {
 	
@@ -17,13 +17,13 @@ public class ServerButton : MonoBehaviour {
 	
 	}
 
-	public ServiceInfo ServiceInfo {
+	public ServerData ServerData {
 		get {
-			return service;
+			return serverData;
 		}
 		set {
-			service = value;
-			label.text = service.ipAddress;
+			serverData = value;
+			label.text = serverData.ip;
 		}
 	}
 
