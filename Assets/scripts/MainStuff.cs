@@ -78,13 +78,13 @@ public class MainStuff : MonoBehaviour
 		} else if(Input.GetKeyDown(KeyCode.Alpha4)) {
 			onScannerMessage("room4");
 		} else if(Input.GetKeyDown(KeyCode.A)) {
-			onScannerMessage("server");
+			onScannerMessage("blue");
 		} else if(Input.GetKeyDown(KeyCode.S)) {
-			onScannerMessage("serverBase");
+			onScannerMessage("blueBase");
 		} else if(Input.GetKeyDown(KeyCode.K)) {
-			onScannerMessage("client");
+			onScannerMessage("red");
 		} else if(Input.GetKeyDown(KeyCode.L)) {
-			onScannerMessage("clientBase");
+			onScannerMessage("redBase");
 		} 
 
 
