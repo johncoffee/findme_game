@@ -9,13 +9,11 @@ public class ServerData {
 
 	public ServerData(ServiceInfo info) {
 		name = info.name;
-		ip = info.ipAddress;
-		port = port;
+		url = "http://" + info.ipAddress + ":" + info.portNumber;
 		id = info.name;
 	}
 
 	public string name;
-	public string ip;
+	public string url;
 	public string id;
-	public int port;
 }

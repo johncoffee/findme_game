@@ -7,7 +7,7 @@ public class RoomList : MonoBehaviour {
 
 	public MainStuff mainStuff;
 	public List<Button> buttons = new List<Button>();
-	public SocketInterface socketInterface;
+	public NetConnector netConnector;
 	public Text teamOutput;
 
 	// Use this for initialization
@@ -27,7 +27,7 @@ public class RoomList : MonoBehaviour {
 				buttons[i].interactable = false;
 			}
 		}
-		if (socketInterface.IsServer) {
+		if (netConnector.PlayerColor == NetConnector.PlayerColors.Blue) {
 			teamOutput.text = "You are team blue";
 		} else {
 			teamOutput.text = "You are team red";

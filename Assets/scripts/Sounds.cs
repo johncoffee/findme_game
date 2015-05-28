@@ -18,7 +18,7 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 	public AudioSource foundPiece = null;
 	public AudioSource foundEnemy = null;
 
-	public SocketInterface socketInterface;
+	public NetConnector netConnector;
 
 	public void Timeup ()
 	{
@@ -43,7 +43,7 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 
 	public void PlayAmbient(int roomID) {
 		ambientSounds [(roomID - 1) % ambientSounds.Count].Play ();
-		if (socketInterface.IsServer) {
+		if (netConnector.PlayerColor == NetConnector.PlayerColors.Blue) {
 			blueSounds [(roomID - 1) % blueSounds.Count].Play ();
 		} else {
 			redSounds [(roomID - 1) % redSounds.Count].Play ();

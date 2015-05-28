@@ -23,7 +23,7 @@ public class ServerButton : MonoBehaviour {
 		}
 		set {
 			serverData = value;
-			label.text = serverData.ip;
+			label.text = serverData.name;
 		}
 	}
 

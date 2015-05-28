@@ -8,10 +8,11 @@ public class Connector : MonoBehaviour {
 	public VerticalLayoutGroup verticalLayout;
 
 	public ServerButton serverButtonPrefab;
+	public MainStuff mainStuff;
 
-	
+
 	private ZeroConf zeroConf;
-	private Client client;
+	public NetConnector connector;
 
 
 	// Use this for initialization
@@ -21,7 +22,6 @@ public class Connector : MonoBehaviour {
 		
 		zeroConf.ServiceFound += ServiceFound;
 		zeroConf.StartPublishAndSearch ();
-		client = GetComponent<Client> ();
 		/*
 		ServerButton button = Instantiate (serverButtonPrefab) as ServerButton;
 		ServiceInfo info = new ServiceInfo ();
@@ -63,13 +63,14 @@ public class Connector : MonoBehaviour {
 		button.ServerData = data;
 		button.transform.SetParent (verticalLayout.transform, false);
 		Button buttonController = button.GetComponent<Button>();
-		buttonController.onClick.AddListener(() => ServerButtonClicked(service));
+		buttonController.onClick.AddListener(() => ServerButtonClicked(data));
 		LayoutRebuilder.MarkLayoutForRebuild (verticalLayout.transform as RectTransform);
 	}
 
 	
-	public void ServerButtonClicked(ServiceInfo service) {
-		client.Connect (service.ipAddress, service.portNumber.ToString());
+	public void ServerButtonClicked(ServerData serverData) {
+		//client.Connect (service.ipAddress, service.portNumber.ToString());
+		mainStuff.ConnectToGame (serverData);
 	}
 	
 

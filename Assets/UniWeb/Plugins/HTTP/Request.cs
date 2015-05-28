@@ -85,6 +85,7 @@ namespace HTTP
 
         public byte[] Bytes {
             set { bytes = value; }
+			get { return bytes; }
         }
 #endregion
 

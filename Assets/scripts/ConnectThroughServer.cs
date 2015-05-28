@@ -6,9 +6,12 @@ using LitJson;
 
 public class ConnectThroughServer : MonoBehaviour {
 
-
+	public InputField gameNameInput;
 	public ServerButton serverButtonPrefab;
 	public UISwitcher ui;
+	public MainStuff mainStuff;
+	public GoogleQueryServer googleQueryServer;
+
 	private VerticalLayoutGroup verticalLayout;
 
 	private List<ServerButton> buttons = new List<ServerButton>();
@@ -32,14 +35,49 @@ public class ConnectThroughServer : MonoBehaviour {
 
 	
 	private IEnumerator GetAllGamesInternal() {
-		var r = new HTTP.Request("GET", "http://findmeqr.appspot.com/games");
+		var r = new HTTP.Request("GET", GoogleQueryServer.GOOGLE_URL + "/games");
 		yield return r.Send();
 		if(r.exception == null) {
 			AddServerButtons(r.response.Text);
-
 		} else {
 			Debug.LogError(r.exception);
 		}
+	}
+
+	public void StartServer() {
+		if (string.IsNullOrEmpty (gameNameInput.text)) {
+			return;
+		}
+
+		HTTPRequest request = HTTPRequest.CreateRequest ();
+		request.Url = GoogleQueryServer.GOOGLE_URL + "/games";
+		request.Method = "POST";
+		request.Arguments.AddField ("url", "http://" + Network.player.ipAddress + ":9090");
+		request.Arguments.AddField ("name", gameNameInput.text);
+		request.RequestFinished += (HTTP.Response reponse, System.Exception exception) => {
+			if(exception != null) {
+				Debug.Log("Could not connect to server! " + exception.Message);
+			}
+			else if(reponse != null) {
+				JsonData json = JsonMapper.ToObject (reponse.Text);
+				if(json == null) {
+					Debug.Log("Response is no JSON");
+					return;
+				}
+
+				ServerData serverData = new ServerData();
+				serverData.id = json["gameId"].ToString();
+				serverData.name = "";
+				serverData.url = GoogleQueryServer.GOOGLE_URL;
+			
+				mainStuff.WaitForOtherPlayer(serverData);
+				googleQueryServer.StartServer ();
+			} else {
+				Debug.Log("Response was null!");
+			}
+		};
+		request.StartRequest ();
+
 	}
 
 	private void AddServerButtons(string jsonString) {
@@ -48,7 +86,7 @@ public class ConnectThroughServer : MonoBehaviour {
 			JsonData jsonData = json[i];
 			ServerData serverData = new ServerData();
 			serverData.id = jsonData["id"].ToString();
-			serverData.ip = jsonData["IPPlayer1"].ToString();
+			serverData.url = GoogleQueryServer.GOOGLE_URL;
 			serverData.name = jsonData["name"].ToString();
 			
 			ServerButton button = Instantiate (serverButtonPrefab) as ServerButton;
@@ -62,6 +100,27 @@ public class ConnectThroughServer : MonoBehaviour {
 	}
 
 	private void ServerButtonClicked(ServerData serverData) {
+
+
+		
+		HTTPRequest request = HTTPRequest.CreateRequest ();
+		request.Url = GoogleQueryServer.GOOGLE_URL + "/addPlayer";
+		request.Method = "POST";
+		request.Arguments.AddField ("url", "http://" + Network.player.ipAddress + ":9090");
+		request.Arguments.AddField ("id", serverData.id);
+		request.RequestFinished += (HTTP.Response response, System.Exception exception) => {
+			if(exception != null) {
+				Debug.Log("Could not connect to server! " + exception.Message);
+			}
+			else if(response != null) {
+
+				mainStuff.ConnectToGame (serverData);
+				googleQueryServer.StartServer ();
+			} else {
+				Debug.Log("Response was null!");
+			}
+		};
+		request.StartRequest ();
 
 	}
 

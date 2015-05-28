@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class UISwitcher : MonoBehaviour {
@@ -9,8 +10,11 @@ public class UISwitcher : MonoBehaviour {
 	public GameObject connectUI;
 	public GameObject lostUI;
 	public GameObject hauntedUI;
+	public GameObject waitingRoomUI;
+
 	public ConnectThroughServer serverConnect;
 
+	public Text debugText;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +35,8 @@ public class UISwitcher : MonoBehaviour {
 		connectUI.SetActive (false);
 		seekUI.SetActive (false);
 		hauntedUI.SetActive (false);
+		waitingRoomUI.SetActive (false);
+		serverConnect.gameObject.SetActive (false);
 		roomsUI.Show();
 	}
 	
@@ -64,6 +70,12 @@ public class UISwitcher : MonoBehaviour {
 		serverConnect.GetAllGames ();
 	}
 	
+	public void ShowWaitingRoom() {
+		connectUI.SetActive (false);
+		serverConnect.gameObject.SetActive (false);
+		waitingRoomUI.gameObject.SetActive (true);
+	}
+	
 	public void ShowConnect() {
 		connectUI.SetActive (true);
 		serverConnect.gameObject.SetActive (false);
@@ -81,5 +93,8 @@ public class UISwitcher : MonoBehaviour {
 		ShowFinishedUI ();
 	}
 
+	public void SetDebugText(string debug) {
+		debugText.text = debug;
+	}
 
 }
