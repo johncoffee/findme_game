@@ -18,6 +18,7 @@ public class MainStuff : MonoBehaviour
 
 	private bool isLocked = false;
 
+	private int numRooms = 3;
 
 
 
@@ -62,6 +63,7 @@ public class MainStuff : MonoBehaviour
 
 	void NFCTest(string message) {
 		ui.SetDebugText (message);
+		onScannerMessage (message);
 	}
 	
 
@@ -98,7 +100,7 @@ public class MainStuff : MonoBehaviour
 		isInRoom = false;
 		bodyPartWasFound = true;
 		visitedRooms.Add (activeRoomID);
-		if (visitedRooms.Count >= 4) {
+		if (visitedRooms.Count >= numRooms) {
 			scannerState = ScannerState.Finished;
 			ui.SendMessage ("OnTimeup");
 
@@ -204,6 +206,7 @@ public class MainStuff : MonoBehaviour
 			if(data == "blue") {
 				if(netConnector.PlayerColor == NetConnector.PlayerColors.Blue) {
 					Found();
+
 				} else {
 					ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.FoundEnemyPiece ());	
 					netConnector.SendFoundOther();
@@ -229,12 +232,14 @@ public class MainStuff : MonoBehaviour
 				
 				ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
 				ui.ShowRoomsUI ();
+				scannerState = ScannerState.Rooms;
 			} else if(data == "redBase" && netConnector.PlayerColor == NetConnector.PlayerColors.Red ) {
 				
 				isLocked = false;
 				
 				ExecuteEvents.Execute<ITimeupEvent> (gameObject, null, (x,y) => x.UnlockEvent ());	
 				ui.ShowRoomsUI ();
+				scannerState = ScannerState.Rooms;
 			} else {
 				//EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
 			}
@@ -254,7 +259,7 @@ public class MainStuff : MonoBehaviour
 				netConnector.SendYouLost();
 
 			} else {
-				EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
+				//EasyCodeScanner.launchScanner( true, "Scanning...", -1, false);
 			}
 		}
 	}
@@ -282,6 +287,11 @@ public class MainStuff : MonoBehaviour
 		EasyCodeScanner.OnScannerEvent -= onScannerEvent;
 		EasyCodeScanner.OnDecoderMessage -= onDecoderMessage;
 	}
-	
+
+	public int NumRooms {
+		get {
+			return this.numRooms;
+		}
+	}
 
 }

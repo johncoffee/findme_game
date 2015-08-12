@@ -43,11 +43,11 @@ public class Sounds : MonoBehaviour, ITimeupEvent {
 
 	public void PlayAmbient(int roomID) {
 		ambientSounds [(roomID - 1) % ambientSounds.Count].Play ();
-		if (netConnector.PlayerColor == NetConnector.PlayerColors.Blue) {
+		/*if (netConnector.PlayerColor == NetConnector.PlayerColors.Blue) {
 			blueSounds [(roomID - 1) % blueSounds.Count].Play ();
 		} else {
 			redSounds [(roomID - 1) % redSounds.Count].Play ();
-		}
+		}*/
 	}
 
 	public void StopAmbient() {

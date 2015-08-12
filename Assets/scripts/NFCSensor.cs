@@ -11,10 +11,11 @@ public class NFCSensor : MonoBehaviour {
 	AndroidJavaClass nfcSensor;
 	// Use this for initialization
 	void Start () {
-		
-		AndroidJNI.AttachCurrentThread ();
-		nfcSensor = new AndroidJavaClass ("com.agentdroid.findme.UnityNFCActivity");
-		nfcSensor.CallStatic ("SetObjectName", name);
+		if (Application.platform == RuntimePlatform.Android) {
+			AndroidJNI.AttachCurrentThread ();
+			nfcSensor = new AndroidJavaClass ("com.agentdroid.findme.UnityNFCActivity");
+			nfcSensor.CallStatic ("SetObjectName", name);
+		}
 	}
 	
 	// Update is called once per frame
